@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="landing_page(login).css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="inner">
+        <span class="title">Rapid Recovery Portal</span>
+      </div>
+    </div>
+    <div class="container">
+      <div class="login-panel employee-login">
+        <h2>Admin Login</h2>
+        <form>
+          <label for="employee-username">User Name:</label>
+          <input
+            type="text"
+            id="employee-username"
+            name="employee-username"
+            placeholder="Enter username"
+            required
+          />
+          <label for="employee-password">Password:</label>
+          <input
+            type="password"
+            id="employee-password"
+            name="employee-password"
+            placeholder="Enter password"
+            required
+          />
+          <button
+            type="submit"
+            onclick="window.location.href='admin_profile_page.html'"
+          >
+            LOGIN
+          </button>
+        </form>
+        <p>
+          Don't have an account?
+          <a href="sign_up.html">Sign Up</a>
+        </p>
+      </div>
+      <div class="login-panel student-login">
+        <h2>Student Login</h2>
+        <form>
+          <label for="student-username">User Name:</label>
+          <input
+            type="text"
+            id="student-username"
+            name="student-username"
+            placeholder="Enter username"
+            required
+          />
+          <label for="student-password">Password:</label>
+          <input
+            type="password"
+            id="student-password"
+            name="student-password"
+            placeholder="Enter password"
+            required
+          />
+          <button
+            type="submit"
+            onclick="window.location.href='student_profile_page.html'"
+          >
+            LOGIN
+          </button>
+        </form>
+        <p>
+          Don't have an account?
+          <a href="sign_up.html">Sign Up</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

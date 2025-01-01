@@ -1,0 +1,188 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+/* Styling for the "Rapid Recovery Portal" heading */
+/* Styling for the portal header container */
+.portal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #3f51b5;
+  padding: 10px 20px;
+}
+
+/* Styling for the portal heading */
+.portal-heading {
+  flex: 1;
+  text-align: center;
+  font-size: 40px;
+  color: white;
+  margin: 0;
+}
+
+/* Styling for the Back button */
+.back-button {
+  background-color: #fff;
+  color: #3f51b5;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #f1f1f1;
+}
+
+/* Styling for the search bar */
+.search-bar {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.search-bar input {
+  width: 60%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-right: 10px;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #444;
+}
+
+.item-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.item {
+  width: 200px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
+  position: relative;
+}
+
+.modal-content h3 {
+  margin: 0;
+}
+
+.modal-content p {
+  margin: 5px 0;
+}
+
+/* Styling for the section headers (Lost Items, Found Items) */
+h1 {
+  text-align: center;
+  font-size: 36px;
+  color: #333;
+  margin-top: 20px;
+}
+
+/* Card container for horizontal scrolling */
+.card-container {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 20px;
+  padding: 20px;
+  scroll-snap-type: x mandatory; /* Snap to each card */
+}
+
+.card-container::-webkit-scrollbar {
+  display: none; /* Optional: hides the scrollbar */
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 300px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0; /* Prevent the cards from shrinking */
+  scroll-snap-align: start; /* Ensure the cards align properly when scrolling */
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card-content h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.card-content p {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 15px;
+}
+
+.card-content button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card-content button:hover {
+  background-color: #444;
+}
