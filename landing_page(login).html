@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="landing_page(login).css">
+  <script>
+    async function handleLogin(event, userType) {
+      event.preventDefault();
+
+      const register_no = document.getElementById(userType + "-register_no").value;
+      const password = document.getElementById(userType + "-password").value;
+      const loginUrl = userType === "admin" ? "http://localhost:8080/login/admin" : "http://localhost:8080/login/user";
+
+      try {
+        const response = await fetch(loginUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ register_no, password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("token", data.token);// Store user ID
+          window.location.href = userType + "_profile_page.html";
+        } else {
+          const errorData = await response.json();
+          alert("Login Failed: " + errorData.message);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        alert("An error occurred. Please try again.");
+      }
+    }
+  </script>
+</head>
+<body>
+<div class="navbar">
+  <div class="inner">
+    <span class="title">Rapid Recovery Portal</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="login-panel">
+    <h2>Admin Login</h2>
+    <form onsubmit="handleLogin(event, 'admin')">
+      <label for="admin-register_no">Username:</label>
+      <input type="text" id="admin-register_no" placeholder="Enter your ID number" required>
+      <label for="admin-password">Password:</label>
+      <input type="password" id="admin-password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <div class="login-panel">
+    <h2>Student Login</h2>
+    <form onsubmit="handleLogin(event, 'student')">
+      <label for="student-register_no">Username:</label>
+      <input type="text" id="student-register_no" placeholder="Enter your register number" required>
+      <label for="student-password">Password:</label>
+      <input type="password" id="student-password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="sign_up.html">Sign Up</a></p>
+  </div>
+</div>
+</body>
+</html>

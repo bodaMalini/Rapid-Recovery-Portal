@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Items</title>
+    <link rel="stylesheet" href="lost_feed.css">
+</head>
+<body>
+
+<div class="portal-header">
+    <button class="back-button" onclick="window.location.href='student_profile_page.html'">
+        Back
+    </button>
+    <h1 class="portal-heading">Rapid Recovery Portal</h1>
+</div>
+
+<!-- Search Bar -->
+<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for lost items...">
+    <button onclick="searchItems()">Search</button>
+</div>
+
+<h1>Found Items</h1>
+<div class="card-container" id="FoundItems"></div>
+
+<script>
+    async function fetchItems() {
+        try {
+            const response = await fetch("http://localhost:8080/found_feed");
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch items");
+            }
+
+            let data = await response.json();
+
+            // Format datetime properly
+            data.forEach(item => {
+                if (item.datetime) {
+                    item.datetime = new Date(item.datetime).toLocaleString();
+                } else {
+                    item.datetime = "Unknown";
+                }
+            });
+
+            displayItems(data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    function displayItems(items) {
+        const container = document.getElementById("FoundItems");
+        container.innerHTML = ""; // Clear previous data
+
+        if (items.length === 0) {
+            container.innerHTML = "<p>No Found items found.</p>";
+            return;
+        }
+
+        items.forEach(item => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+
+            const imageUrl = item.image_url ? item.image_url : "default_image.png";
+
+            card.innerHTML = `
+                <img src="${imageUrl}" alt="${item.item_name}" onerror="this.onerror=null; this.src='default_image.png';">
+                <div class="card-content">
+                    <h3>${item.item_name}</h3>
+                    <p><strong>ID:</strong> ${item.id}</p>
+                    <p><strong>Description:</strong> ${item.description}</p>
+                    <p><strong>Date & Time:</strong> ${item.datetime}</p>
+                    <p><strong>Place:</strong> ${item.place}</p>
+                    <p><strong>Category:</strong> ${item.category}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function searchItems() {
+        const query = document.getElementById("searchInput").value.toLowerCase();
+        const allCards = document.querySelectorAll(".card");
+
+        allCards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(query) ? "block" : "none";
+        });
+    }
+
+    window.onload = fetchItems;
+</script>
+
+</body>
+</html>

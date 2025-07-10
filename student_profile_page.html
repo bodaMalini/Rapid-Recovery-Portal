@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>student_profile_page</title>
+  <link rel="stylesheet" href="student_profile_page.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <span class="title">Rapid Recovery Portal</span>
+  <div class="nav-links">
+    <button class="btn" onclick="window.location.href='lost_item.html'">Lost Item</button>
+    <button class="btn" onclick="window.location.href='found_item.html'">Found Item</button>
+    <button class="btn" onclick="window.location.href='lost_feed.html'">Lost Feed</button>
+    <button class="btn" onclick="window.location.href='found_feed.html'">Found Feed</button>
+    <button class="btn" onclick="window.location.href='myListings.html'">My Listings</button>
+    <button class="btn logout-btn" onclick="logout()">Logout</button> <!-- Logout Button -->
+  </div>
+</div>
+
+<!-- Welcome Message -->
+<h2>Welcome User 👋!</h2>
+
+<!-- Process Blocks -->
+<div class="process-container">
+  <div class="process-block">
+    <h3>Lost</h3>
+    <p>If you've lost an item, follow these steps:</p>
+    <ol>
+      <li>Click on the "Lost Item" button above.</li>
+      <li>Fill out the form with details about your lost item.</li>
+      <li>Upload a picture of the item (optional but recommended).</li>
+      <li>Submit your listing, and it will appear on the Feed for others.</li>
+    </ol>
+  </div>
+
+  <div class="process-block">
+    <h3>Found</h3>
+    <p>If you've found an item, follow these steps:</p>
+    <ol>
+      <li>Click on the "Found Item" button above.</li>
+      <li>Provide details about the item you found.</li>
+      <li>Upload a picture of the item (optional).</li>
+      <li>Submit your listing, and it will be displayed on the Feed.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  // Logout Function
+  function logout() {
+    localStorage.removeItem("token"); // Remove stored authentication token
+    window.location.href = "landing_page(login).html"; // Redirect to login page
+  }
+
+  // Lost & Found Modals
+  const lostModal = document.getElementById("lostItemModal");
+  const lostItemBtn = document.getElementById("lostItemBtn");
+  const closeLostModal = document.getElementById("closeLostModal");
+  const lostItemForm = document.getElementById("lostItemForm");
+
+  lostItemBtn.addEventListener("click", () => lostModal.style.display = "block");
+  closeLostModal.addEventListener("click", () => lostModal.style.display = "none");
+
+  const foundModal = document.getElementById("foundItemModal");
+  const foundItemBtn = document.getElementById("foundItemBtn");
+  const closeFoundModal = document.getElementById("closeFoundModal");
+  const foundItemForm = document.getElementById("foundItemForm");
+
+  foundItemBtn.addEventListener("click", () => foundModal.style.display = "block");
+  closeFoundModal.addEventListener("click", () => foundModal.style.display = "none");
+
+  lostItemForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    alert("Lost Item Submitted Successfully!");
+    lostModal.style.display = "none";
+    lostItemForm.reset();
+  });
+
+  foundItemForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    alert("Found Item Submitted Successfully!");
+    foundModal.style.display = "none";
+    foundItemForm.reset();
+  });
+</script>
+
+</body>
+</html>

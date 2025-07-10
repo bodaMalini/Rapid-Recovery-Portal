@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Items</title>
+    <link rel="stylesheet" href="lost_feed.css">
+</head>
+<body>
+
+<div class="portal-header">
+    <button class="back-button" onclick="window.location.href='admin_profile_page.html'">Back</button>
+    <h1 class="portal-heading">Rapid Recovery Portal</h1>
+</div>
+
+<!-- Search Bar -->
+<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for lost items..." oninput="searchItems()">
+    <button onclick="searchItems()">Search</button>
+</div>
+
+<h1>Lost Items</h1>
+<div class="card-container" id="lostItems"></div>
+
+<script>
+    async function fetchItems() {
+        try {
+            const response = await fetch("http://localhost:8080/lost_feed");
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch items");
+            }
+
+            let data = await response.json();
+
+            if (!Array.isArray(data) || data.length === 0) {
+                document.getElementById("lostItems").innerHTML = "<p>No items found.</p>";
+                return;
+            }
+
+            data.forEach(item => {
+                item.datetime = item.datetime ? new Date(item.datetime).toLocaleString() : "Unknown";
+            });
+
+            displayItems(data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            document.getElementById("lostItems").innerHTML = "<p>No items found.</p>";
+        }
+    }
+
+    function displayItems(items) {
+        const container = document.getElementById("lostItems");
+        container.innerHTML = "";
+
+        if (items.length === 0) {
+            container.innerHTML = "<p>No lost items available.</p>";
+            return;
+        }
+
+        items.forEach(item => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+
+            const imageUrl = item.image_url ? item.image_url : "default_image.png";
+
+            card.innerHTML = `
+    <img src="${imageUrl}" alt="${item.item_name}" onerror="this.onerror=null; this.src='default_image.png';">
+    <div class="card-content">
+        <h3>${item.item_name}</h3>
+        <p><strong>Description:</strong> ${item.description}</p>
+        <p><strong>Date & Time:</strong> ${item.datetime}</p>
+        <p><strong>Place:</strong> ${item.place}</p>
+        <p><strong>Category:</strong> ${item.category}</p>
+        <input type="number" placeholder="Enter Found Item ID" class="found-id-input" id="found-id-${item.id}">
+        <button class="returned-btn" onclick="markAsReturned(${item.id})">Mark as returned</button>
+    </div>
+`;
+
+            container.appendChild(card);
+        });
+    }
+
+    async function markAsReturned(lostItemId) {
+        const foundItemId = document.getElementById(`found-id-${lostItemId}`).value;
+
+        if (!foundItemId) {
+            alert("Please enter the Found Item ID.");
+            return;
+        }
+
+        if (!confirm(`Are you sure you want to mark Lost Item ${lostItemId} with Found Item ${foundItemId} as returned?`)) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/admin/lost/return/${lostItemId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ found_item_id: Number(foundItemId) }) // <-- FIXED
+            });
+
+
+            if (!response.ok) {
+                throw new Error("Failed to move item to returned table.");
+            }
+
+            alert("Item marked as returned!");
+            fetchItems(); // Refresh the feed
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong. Please try again.");
+        }
+    }
+
+
+    function searchItems() {
+        const query = document.getElementById("searchInput").value.toLowerCase();
+        const allCards = document.querySelectorAll(".card");
+
+        allCards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(query) ? "block" : "none";
+        });
+    }
+
+    window.onload = fetchItems;
+</script>
+
+</body>
+</html>

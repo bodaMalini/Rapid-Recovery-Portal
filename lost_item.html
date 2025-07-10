@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Lost Item</title>
+    <link rel="stylesheet" href="lost_item.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="portal-header">
+    <button
+            class="back-button"
+            onclick="window.location.href='student_profile_page.html'"
+    >
+        Back
+    </button>
+    <h1 class="portal-heading">Rapid Recovery Portal</h1>
+</div>
+
+<!-- Lost Item Form Container -->
+<div class="container">
+    <div class="lost-container">
+        <h2>Post Lost Item</h2>
+        <form id="lostItemForm">
+            <label for="register_no">Register No*</label>
+            <input type="text" id="register_no" placeholder="Enter register number" required>
+
+            <label for="itemName">Item Name*</label>
+            <input type="text" id="itemName" placeholder="Enter item name" required>
+
+            <label for="description">Description*</label>
+            <textarea id="description" placeholder="Enter description" rows="4" required></textarea>
+
+            <label for="datetime">Date & Time Lost*</label>
+            <input type="datetime-local" id="datetime" required>
+
+            <label for="place">Place Lost*</label>
+            <input type="text" id="place" placeholder="e.g., Library, Canteen" required>
+
+            <label for="category">Category*</label>
+            <select id="category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Jewellery">Jewellery</option>
+                <option value="Stationery">Stationery</option>
+                <option value="Other">Others</option>
+            </select>
+
+            <label for="imageInput">Upload Image</label>
+            <input type="file" id="imageInput" accept="image/*">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("lostItemForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        // Convert datetime format
+        const inputDate = document.getElementById("datetime").value; // e.g., "2025-02-28T14:30"
+        const formattedDate = inputDate.replace("T", " ") + ":00";  // Convert to "2025-02-28 14:30:00"
+
+        const formData = new FormData();
+        formData.append("user_id", document.getElementById("register_no").value);
+        formData.append("item_name", document.getElementById("itemName").value);
+        formData.append("description", document.getElementById("description").value);
+        formData.append("datetime", formattedDate); // Correct format for backend
+        formData.append("place", document.getElementById("place").value);
+        formData.append("category", document.getElementById("category").value);
+
+        const imageInput = document.getElementById("imageInput");
+        if (imageInput.files.length > 0) {
+            formData.append("image_url", imageInput.files[0]);
+        }
+
+        try {
+            const response = await fetch("http://localhost:8080/lost_items", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert("Lost item posted successfully!");
+                document.getElementById("lostItemForm").reset();
+            } else {
+                alert("Error: " + result.message);
+            }
+        } catch (error) {
+            alert("Failed to submit. Please try again.");
+            console.error(error);
+        }
+    });
+</script>
+
+</body>
+</html>
